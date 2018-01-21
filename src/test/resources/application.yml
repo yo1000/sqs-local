@@ -1,2 +1,2 @@
 cloud.aws:
-    region.static: ap-northeast-1
+  region.static: ap-northeast-1

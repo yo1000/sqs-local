@@ -1,4 +1,4 @@
-package com.yo1000.sqs.local.repository
+package com.yo1000.sqs.local.controller
 
 import com.yo1000.sqs.local.SqsConfiguration
 import com.yo1000.sqs.local.TestSqsConfiguration
@@ -11,7 +11,7 @@ import org.springframework.cloud.aws.messaging.listener.Acknowledgment
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener
 import org.springframework.context.annotation.Primary
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Controller
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -40,7 +40,7 @@ class StringMessageListenerTests {
 }
 
 @Primary
-@Repository
+@Controller
 class SpiedStringMessageListener : StringMessageListener() {
     val countDownLatch = CountDownLatch(1)
 
