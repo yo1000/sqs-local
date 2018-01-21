@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 @Controller
 class StringMessageListener {
     @SqsListener(value = "lQueue", deletionPolicy = SqsMessageDeletionPolicy.NEVER)
-    fun listen(message: String, ack: Acknowledgment) {
+    fun receive(message: String, ack: Acknowledgment) {
         println(message)
         ack.acknowledge()   // Only on `deletionPolicy = SqsMessageDeletionPolicy.NEVER`
     }

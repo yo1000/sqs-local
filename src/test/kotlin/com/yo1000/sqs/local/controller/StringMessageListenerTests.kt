@@ -45,8 +45,8 @@ class SpiedStringMessageListener : StringMessageListener() {
     val countDownLatch = CountDownLatch(1)
 
     @SqsListener(value = TestSqsConfiguration.LISTENING_QUEUE_URL, deletionPolicy = SqsMessageDeletionPolicy.NEVER)
-    override fun listen(message: String, ack: Acknowledgment) {
-        super.listen(message, ack)
+    override fun receive(message: String, ack: Acknowledgment) {
+        super.receive(message, ack)
         countDownLatch.countDown()
     }
 }
