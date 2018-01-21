@@ -29,10 +29,13 @@ class StringMessageListenerTests {
     lateinit var listeningQueueMessagingTemplate: SqsConfiguration.ListeningQueueMessagingTemplate
 
     @Test
-    fun manualDeletion_withAcknowledgmentCalled_shouldSucceedAndDeleteMessage() {
+    fun test_that_queue_item_is_consumed_by_listeners_ack_invoke() {
         listeningQueueMessagingTemplate.convertAndSend("some message")
+
         Assert.assertTrue((stringMessageListener as SpiedStringMessageListener)
                 .countDownLatch.await(15, TimeUnit.SECONDS))
+
+        Assert.assertNull(listeningQueueMessagingTemplate.receive())
     }
 }
 
