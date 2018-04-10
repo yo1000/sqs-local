@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 @SpringBootTest
 class StringMessageListenerTests {
     @Autowired
-    lateinit var stringMessageListener: StringMessageListener
+    lateinit var stringMessageListener: SpiedStringMessageListener
     @Autowired
     lateinit var listeningQueueMessagingTemplate: SqsConfiguration.ListeningQueueMessagingTemplate
 
@@ -32,8 +32,7 @@ class StringMessageListenerTests {
     fun test_that_queue_item_is_consumed_by_listeners_ack_invoke() {
         listeningQueueMessagingTemplate.convertAndSend("some message")
 
-        Assert.assertTrue((stringMessageListener as SpiedStringMessageListener)
-                .countDownLatch.await(15, TimeUnit.SECONDS))
+        stringMessageListener.countDownLatch.await()
 
         Assert.assertNull(listeningQueueMessagingTemplate.receive())
     }
@@ -44,9 +43,10 @@ class StringMessageListenerTests {
 class SpiedStringMessageListener : StringMessageListener() {
     val countDownLatch = CountDownLatch(1)
 
-    @SqsListener(value = TestSqsConfiguration.LISTENING_QUEUE_URL, deletionPolicy = SqsMessageDeletionPolicy.NEVER)
+    @SqsListener(value = [(TestSqsConfiguration.LISTENING_QUEUE_URL)], deletionPolicy = SqsMessageDeletionPolicy.NEVER)
     override fun receive(message: String, ack: Acknowledgment) {
         super.receive(message, ack)
+
         countDownLatch.countDown()
     }
 }

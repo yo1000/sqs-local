@@ -17,17 +17,14 @@ import org.springframework.context.annotation.Primary
 @Configuration
 class SqsConfiguration {
     @ConditionalOnMissingBean
-    @Primary
     @Bean
-    fun manuallyQueueMessagingTemplate(resourceIdResolver: ResourceIdResolver): ManuallyQueueMessagingTemplate {
-        val amazonSQS = AmazonSQSAsyncClientBuilder.standard().build()
+    fun manuallyQueueMessagingTemplate(resourceIdResolver: ResourceIdResolver, amazonSQS: AmazonSQSAsync): ManuallyQueueMessagingTemplate {
         return ManuallyQueueMessagingTemplate(amazonSQS, resourceIdResolver)
     }
 
     @ConditionalOnMissingBean
     @Bean
-    fun listeningQueueMessagingTemplate(resourceIdResolver: ResourceIdResolver): ListeningQueueMessagingTemplate {
-        val amazonSQS = AmazonSQSAsyncClientBuilder.standard().build()
+    fun listeningQueueMessagingTemplate(resourceIdResolver: ResourceIdResolver, amazonSQS: AmazonSQSAsync): ListeningQueueMessagingTemplate {
         return ListeningQueueMessagingTemplate(amazonSQS, resourceIdResolver)
     }
 
